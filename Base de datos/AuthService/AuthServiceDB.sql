@@ -7,13 +7,15 @@ create table Users(
 	id int primary key identity(1,1),
 	email varchar(320) unique not null,
 	password varchar(max) not null,
+	Name varchar(100) not null,
+	Lastname varchar(100) not null,
 	created_at date not null,
 	updated_at date not null,
 	Verified bit not null
 );
 
 create table Role(
-	id int primary key,
+	id int primary key identity(1,1),
 	name varchar(50) not null
 );
 
@@ -39,16 +41,25 @@ create table RolePermissions(
 
 --------------------------------------------------------------------------------------------------------
 
+
+INSERT into Role(name
+
+
+
+--------------------------------------------------------------------------------------------------------
+
 go
 create procedure SP_CreateUser
 	@Email varchar(320),
+	@Name varchar(100),
+	@Lastname varchar(100),
 	@Password varchar(max),
 	@Role varchar(50)
 as
 begin transaction TX_New_User
 	BEGIN TRY
-		INSERT INTO Users(email,password,created_at,updated_at,Verified)
-		values (@Email, @Password, GETDATE(), GETDATE(), 0)
+		INSERT INTO Users(email,password, Name, Lastname, created_at,updated_at,Verified)
+		values (@Email, @Password, @Name, @Lastname,GETDATE(), GETDATE(), 0)
 
 		INSERT INTO UserRoleAssingment(users_id, role_id)
 		values ((select id from Users where email = @Email), (select id from Role where name = @Role))
@@ -60,6 +71,20 @@ begin transaction TX_New_User
 		SELECT ERROR_MESSAGE() as Message, 1 as Error
 	END CATCH
 go
+---------------------------------
+
+execute SP_CreateUser 'email@gmail.com', 'Juan', 'Eduardo', '1234', 'Musician'
+
+
+go
+create procedure SP_ReadUser
+	@Email varchar(320)
+as
+begin
+	SELECT Name, Lastname, (select name from Role where UserRoleAssingment.role_id = id) from Users inner join UserRoleAssingment on Users.id = UserRoleAssingment.users_id where email = @Email
+end
+go
+
 ---------------------------------
 
 go
