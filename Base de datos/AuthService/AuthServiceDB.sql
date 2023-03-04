@@ -3,6 +3,12 @@ drop database if exists AuthServiceDB;
 create database AuthServiceDB;
 use AuthServiceDB;
 
+create table Role(
+	id int primary key identity(1,1),
+	name varchar(50) not null
+);
+
+
 create table Users(
 	id int primary key identity(1,1),
 	email varchar(320) unique not null,
@@ -11,20 +17,12 @@ create table Users(
 	Lastname varchar(100) not null,
 	created_at date not null,
 	updated_at date not null,
-	Verified bit not null
-);
-
-create table Role(
-	id int primary key identity(1,1),
-	name varchar(50) not null
-);
-
-create table UserRoleAssingment(
-	users_id int not null,
+	Verified bit not null,
 	role_id int not null,
-	constraint fk_users foreign key (users_id) references Users(id),
-	constraint fk_role foreign key (role_id) references Role(id)
+	constraint fk_role_1 foreign key (role_id) references Role(id)
 );
+
+
 
 create table Permission(
 	id int primary key identity(1,1),
@@ -42,7 +40,7 @@ create table RolePermissions(
 --------------------------------------------------------------------------------------------------------
 
 
-INSERT into Role(name
+INSERT into Role(name) values ('Musician'),('Organizer')
 
 
 
@@ -58,13 +56,15 @@ create procedure SP_CreateUser
 as
 begin transaction TX_New_User
 	BEGIN TRY
-		INSERT INTO Users(email,password, Name, Lastname, created_at,updated_at,Verified)
-		values (@Email, @Password, @Name, @Lastname,GETDATE(), GETDATE(), 0)
+		if @Role = 'Musician' or @Role = 'Organizer'
+		begin
+			INSERT INTO Users(email,password, Name, Lastname, created_at,updated_at,Verified, role_id)
+			values (@Email, @Password, @Name, @Lastname,GETDATE(), GETDATE(), 0, (select id from Role where name = @Role))
 
-		INSERT INTO UserRoleAssingment(users_id, role_id)
-		values ((select id from Users where email = @Email), (select id from Role where name = @Role))
-		COMMIT TRANSACTION TX_New_User
-		SELECT 'Usuario Creado Correctamente' as Message, 0 as Error
+			COMMIT TRANSACTION TX_New_User
+			SELECT 'Usuario Creado Correctamente' as Message, 0 as Error
+		end
+		else select 'Roles invalidos' as Message, 1 as Error
 	END TRY
 	BEGIN CATCH
 		ROLLBACK TRANSACTION TX_New_User
@@ -81,7 +81,7 @@ create procedure SP_ReadUser
 	@Email varchar(320)
 as
 begin
-	SELECT Name, Lastname, (select name from Role where UserRoleAssingment.role_id = id) from Users inner join UserRoleAssingment on Users.id = UserRoleAssingment.users_id where email = @Email
+	SELECT Name, Lastname, (select name from Role where id = role_id) as Role from Users where email = @Email
 end
 go
 
@@ -129,7 +129,6 @@ begin transaction TX_DeleteUser
 		declare @id int
 		SELECT @id = id from Users where email = @Email
 		
-		DELETE FROM UserRoleAssingment where users_id = @id
 		DELETE FROM Users where id = @id
 		COMMIT TRANSACTION TX_DeleteUser
 		SELECT 'Usuario eliminado correctamente' as Message, 0 as Error
