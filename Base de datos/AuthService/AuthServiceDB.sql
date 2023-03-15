@@ -16,8 +16,8 @@ create table Users(
 	Name varchar(100) not null,
 	Lastname varchar(100) not null,
 	created_at date not null,
-	updated_at date not null,
-	Verified bit not null,
+	updated_at date,
+	Verified bit not null default 0,
 	role_id int not null,
 	constraint fk_role_1 foreign key (role_id) references Role(id)
 );
@@ -39,10 +39,7 @@ create table RolePermissions(
 
 --------------------------------------------------------------------------------------------------------
 
-
 INSERT into Role(name) values ('Musician'),('Organizer')
-
-
 
 --------------------------------------------------------------------------------------------------------
 
@@ -58,8 +55,8 @@ begin transaction TX_New_User
 	BEGIN TRY
 		if @Role = 'Musician' or @Role = 'Organizer'
 		begin
-			INSERT INTO Users(email,password, Name, Lastname, created_at,updated_at,Verified, role_id)
-			values (@Email, @Password, @Name, @Lastname,GETDATE(), GETDATE(), 0, (select id from Role where name = @Role))
+			INSERT INTO Users(email,password, Name, Lastname, created_at, role_id)
+			values (@Email, @Password, @Name, @Lastname, GETDATE(), (select id from Role where name = @Role))
 
 			COMMIT TRANSACTION TX_New_User
 			SELECT 'Usuario Creado Correctamente' as Message, 0 as Error
@@ -102,13 +99,30 @@ go
 -----------------------
 
 go
+create procedure SP_VerifyUser
+	@Email varchar(320)
+as
+begin transaction TX_VerifyUser
+	BEGIN TRY
+		UPDATE Users set Verified = 1, updated_at = GETDATE() where email = @Email
+		COMMIT TRANSACTION TX_VerifyUser
+		SELECT 'Usuario verificado correctamente' as Message, 0 as Error
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION TX_VerifyUser
+		SELECT ERROR_MESSAGE() as Message, 1 as Error
+	END CATCH
+go
+-----------------------
+
+go
 create procedure SP_ChangePassword
 	@Email varchar(320),
 	@NewPass varchar(max)
 as
 begin transaction TX_ChangePassword
 	BEGIN TRY
-		UPDATE Users set password = @NewPass where email = @Email
+		UPDATE Users set password = @NewPass, updated_at = GETDATE() where email = @Email
 		COMMIT TRANSACTION TX_ChangePassword
 		SELECT 'Contraseña actualizada correctamente' as Message, 0 as Error
 	END TRY
@@ -140,3 +154,29 @@ begin transaction TX_DeleteUser
 go
 
 -------------------
+
+go
+create procedure SP_UpdateUser
+	@Email varchar(320),
+	@newEmail varchar(320),
+	@Name varchar(100),
+	@Lastname varchar(100)
+as
+begin transaction TX_Update_User
+	BEGIN TRY
+		update Users set 
+			email = ISNULL(@newEmail, email),
+			Name = ISNULL(@Name, Name),
+			Lastname = ISNULL(@Lastname, Lastname),
+			updated_at = GETDATE()
+		where email = @Email
+		COMMIT TRANSACTION TX_Update_User
+		SELECT 'Usuario actualizado correctamente' as Message, 0 as Error
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION TX_Update_User
+		SELECT ERROR_MESSAGE() as Message, 1 as Error
+	END CATCH
+go
+
+------------------
