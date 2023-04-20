@@ -1,0 +1,84 @@
+{
+  "openapi" : "3.0.3",
+  "info":{
+    "title" : "Nodens API - Swagger UI",
+    "description" : " This is the API Documentation for Nodens.\nAll the routes and Schemas can change until a first version of the proyect in production.Even this file.\nRepo Links:\n- [Nodens Backend](https://github.com/moises-ph/Nodens_Backend)\n- [Nodens Frontend](https://github.com/moises-ph/Nodens_Frontend)\n",
+    "version" : "0.1.0",
+    "termsOfService" : "http://swagger.io/terms/"
+  },
+  "tags" : [
+    {
+      "name" : "Auth",
+      "description" : "Authentication Service in Nodens"
+    },
+    {
+      "name" : "Musicians",
+      "description" : "Service to Manage Musicians Service"
+    },
+    {
+      "name" : "Organizers",
+      "description" : "Service to Manage Organizers Service"
+    },
+    {
+      "name" : "Offers",
+      "description" : "Service to publish Offers and aplicate to them"
+    }
+  ],
+  "paths" : {
+    "/api/auth/login" : {
+      "post" : {
+        "tags" : ["Auth"],
+        "summary" : "Log in Nodens",
+        "description" : "Get Credentials for logining in Nodens",
+        "operationId" : "login",
+        "requestBody" : {
+          "description" : "The requested data to Log In",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "email" : { "type" : "string" },
+                  "password" : { "type" : "string" }
+                },
+                "required" : ["email", "password"]
+              },
+              "examples" : {
+                "user" : {
+                  "summary" : "User Login example",
+                  "value" : {
+                    "email" : "you@email.com",
+                    "password" : "yourStrongPassword"
+                  }
+                }
+              }
+            }
+          },
+          "required" : "true"
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Succesful Login",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "token" : { "type" : "string" },
+                    "verified" : { "type" : "boolean" },
+                    "username" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "token" : "theAuthTokenGoesHere",
+                    "verified" : "true",
+                    "username" : "User1234"                  
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
