@@ -136,7 +136,7 @@
       "post" : {
         "tags" : ["Auth"],
         "summary" : "Recovery Password: 1° Step",
-        "description" : "This is the first step to recovery the password, here you request a change to the password",
+        "description" : "This is the first step to recovery the password, here you request a change to the password.\nThe system creates a session of 30 minutes to change the password, after that time the user will have to do the request another time",
         "operationId" : "recoveryPass1",
         "parameters" : [
           {
@@ -154,7 +154,7 @@
                   "properties" : {
                     "Message" : { "type" : "string" }
                   },
-                  "example" :{
+                  "example" : {
                     "Message" : "Usuario no registrado"
                   }
                 }
@@ -214,6 +214,293 @@
       }
     },
     "/api/auth/recovery/request" : {
+      "post" : {
+        "tags" : ["Auth"],
+        "summary" : "Recovery Password: 2° Step",
+        "description" : "This is the second step to recovery the password, here you recieve the token to change the password.",
+        "operationId" : "recoveryPass2",
+        "parameters" : [
+          {
+            "name" : "gdusr",
+            "in" : "query"
+          },
+          {
+            "name" : "mn",
+            "in" : "query"
+          }
+        ],
+        "responses" : {
+          "401" : {
+            "description" : "The Session expired, the credentials ar not valid or an Unexpected Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "msg" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "msg" : "Url Expirada, por favor vuelva a pedir el restablecimiento de contraseña"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Succesful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "token" : { "type" : "string" },
+                    "upResult" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "token" : "theRecoveryTokenGoesHere",
+                    "upResult" : "thisIsTheResult.YouCanIgnoreIt"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/recovery/reset" : {
+      "put" : {
+        "tags" : ["Auth"],
+        "summary" : "Recovery Password: 3° Step",
+        "description" : "This is the las step, here you send the token given in the step before in the headers like an authentication, and send the password in the URL Query",
+        "operationId" : "recoveryPass3",
+        "parameters" : [
+          {
+            "name" : "pass",
+            "in" : "query"
+          }
+        ],
+        "responses" : {
+          "404" : {
+            "description" : "The URL Expired, the session is running up until the password changes (this step)",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "msg" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "msg" : "Url expirada, por favor vuelva a pedir el restablecimiento de contraseña"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The step before wasn't done or the credentials are not valid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "msg" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "msg" : "Vuelva a solicitar el restablecimiento de su contraseña"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "There was an error tring to change the password (all the validations at this point are correct)",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "Message" : "Some error"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "The password where successfully changed",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "Message" : "Contraseña cambiada correctamente"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "There was an Unexpected Error during the process",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "Message" : "Some Unexpected error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/verify" : {
+      "put" : {
+        "tags" : ["Auth"],
+        "summary" : "Verify the Email",
+        "description" : "This URL normally is sended to the email, but it's also in the response when the user get register in the platform. Here you send some credentials to validate the Email, the credentials expires in 1 hour",
+        "operationId" : "verifyUser",
+        "parameters" : [
+          {
+            "name" : "em",
+            "in" : "query"
+          },
+          {
+            "name" : "guid",
+            "in" : "query"
+          }
+        ],
+        "responses" : {
+          "404" : {
+            "description" : "The URL Expired, basically the credentials exired after 1 hour",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Unexpected Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Succesful Verification of the User",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/verify/req" : {
+      "post" : {
+        "tags" : ["Auth"],
+        "summary" : "Request a Verification for the Email",
+        "description" : "Request a new Verification Link to Verify the User, usually this happens when the URL Sended when Register expires",
+        "operationId" : "requestVerifyUser",
+        "requestBody" : {
+          "description" : "The Email for Request a Verification URL",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "email" : { "type" : "string" }
+                },
+                "required" : ["email"]
+              },
+              "examples" : {
+                "user" : {
+                  "summary" : "An Email to verify",
+                  "value" : {
+                    "email" : "you@email.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "404" : {
+            "description" : "The Email or the User doesn't exists",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "Message" : "El usuario no existe, por favor regístrese"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Succesful Verification Request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "url" : { "type" : "string", "description" : "The New URL to Verify" },
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "url" : "http://url.com/api/auth/verify?TheCredentials",
+                    "Message" : "Verificación de email solicitada correctamente, vaya al enlace"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Unexpected Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/Register" : {
       
     }
   }
