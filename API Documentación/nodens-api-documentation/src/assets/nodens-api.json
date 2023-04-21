@@ -76,8 +76,65 @@
                 }
               }
             }
+          },
+          "401" : {
+            "description" : "Wrong Password or an Unexpected Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "token" : { "type" : "string" },
+                    "message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "token" : "",
+                    "message" : "Contraseña Incorrecta"
+                  }
+                }
+              }
+            }
           }
         }
+      }
+    },
+    "/api/auth/renew" : {
+      "put" : {
+        "tags" : ["Auth"],
+        "summary" : "Renew Authentication token",
+        "description" : "Renew the token (The token expires at 15 minutes)",
+        "operationId" : "tokenRenew",
+        "parameters" : [
+          {
+            "name" : "token", 
+            "in" : "query"
+          }
+        ],
+        "responses" : {
+          "401" : {
+            "description" : "Invalid Cookies or Unexpected error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "token" : { "type" : ["string", "null"] },
+                    "message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "token" : "",
+                    "message" : "Invalid Cookies"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/recovery/pre" : {
+      "post" : {
+        
       }
     }
   }
