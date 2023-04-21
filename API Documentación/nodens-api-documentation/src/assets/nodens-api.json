@@ -134,8 +134,87 @@
     },
     "/api/auth/recovery/pre" : {
       "post" : {
-        
+        "tags" : ["Auth"],
+        "summary" : "Recovery Password: 1° Step",
+        "description" : "This is the first step to recovery the password, here you request a change to the password",
+        "operationId" : "recoveryPass1",
+        "parameters" : [
+          {
+            "name" : "Email",
+            "in" : "query"
+          }
+        ],
+        "responses" : {
+          "404" : {
+            "description" : "The Email given was not found, the user doesn't exists",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" :{
+                    "Message" : "Usuario no registrado"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "No Email was sent or is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" :{
+                    "Message" : "Email no válido"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unexpected Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" :{
+                    "Message" : "Some error"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Succesful request to recovery the password",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "guid" : { "type" : "string" },
+                    "Email" : { "type" : "string" },
+                    "email" : { "type" : "string" },
+                    "source" : { "type" : "object" },
+                    "timestamp" : { "type" : "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
+    },
+    "/api/auth/recovery/request" : {
+      
     }
   }
 }
