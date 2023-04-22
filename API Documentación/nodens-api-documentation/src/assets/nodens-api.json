@@ -522,7 +522,42 @@
           {
             "Authentication" : []
           }
-        ]
+        ],
+        "operationId" : "getuser",
+        "response" : {
+          "200" : {
+            "description" : "The User",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Email" : { "type" : "string" },
+                    "userName" : { "type" : "string" },
+                    "Rol" : { "type" : "string" },
+                    "verified" : { "type" : "boolean" }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Unexpected Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "Message" : "Some error"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/user/Register" : {
@@ -598,6 +633,49 @@
               }
             }
           }
+        }
+      }
+    },
+    "/api/user/update" : {
+      "put" : {
+        "tags" : ["Auth"],
+        "summary" : "Update User",
+        "description" : "Update the User info, the Authentication token is required",
+        "security" : [
+          {
+            "Authentication" : []
+          }
+        ],
+        "operationId" : "updateUser",
+        "requestBody" : {
+          "description" : "The Information for Update",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "userName" : { "type" : "string" },
+                  "OldEmail" : { "type" : "string", "description" : "The old email used for the user" },
+                  "NewEmail" : { "type" : "string", "description" : "The new email for the user, if the user doesn't want to change his Email, this field can be the same or null" }
+                }
+              },
+              "examples" : {
+                "userName" : "newUserName12345",
+                "OldEmail" : "something@email.com",
+                "NewEmail" : "newemail@email.com"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/musician/all" : {
+      "get" : {
+        "tags" : ["Musicians"],
+        "summary" : "Get all Musicians",
+        "description" : "All Musicians in platform",
+        "responses" : {
+          
         }
       }
     }
