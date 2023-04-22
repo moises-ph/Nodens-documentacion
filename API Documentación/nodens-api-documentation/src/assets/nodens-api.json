@@ -675,7 +675,77 @@
         "summary" : "Get all Musicians",
         "description" : "All Musicians in platform",
         "responses" : {
-          
+          "200" : {
+            "description" : "Succesful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "IdAuth" : { "type" : "integer", "description" : "ID in the Auth Service"  },
+                    "Name" :  { "type" : "string", "description" : "Name of the Musician"  },
+                    "Lastname" : { "type" : "string", "description" : "Lastname of the Musician"  },
+                    "fecha_nacimiento" : { "type" : "string", "format" : "date" ,"description" : "Date of birth of the Musician"  },
+                    "instrumentos" : { 
+                      "type" : "array", 
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "nombre" : { "type" : "string", "description" : "The name of the instrument"},
+                          "nivel" : { "type" : "string", "description" : "A description of the Musician's level on that one instrument"}
+                        }
+                      },
+                      "description" : "An array of the Instruments that the Musician knows to play"
+                    },
+                    "genero" : { "type" : "string", "description" : "The gender of the Musician"  },
+                    "descripcion" : { "type" : "string", "description" : "A description of the Musician"  },
+                    "generosMusicales" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "string"
+                      },
+                      "description" : "An array with the Musician genres that the Musician knows to play"
+                    },
+                    "pais" : { "type" : "string", "description" : "Country of the Musician"  },
+                    "ciudad" : { "type" : "string", "description" : "City of the Musician"  },
+                    "experiencia" : { "type" : "string", "description" : "A Description of the general experience in Music of the Musician"  },
+                    "educacion" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "nombre" : { "type" : "string", "description" : "Name of the degree"},
+                          "institucion" : { "type" : "string", "description" : "Name of the institutin where the Musician did the degree"  },
+                          "fecha_inicio" : { "type" : "string", "format" : "date", "description" : "Date when the Musician started to study the degree"  },
+                          "fecha_fin" : { "type" : "string", "format" : "date", "description" : "Date when the Musician finished the degree" }
+                        }
+                      }
+                    },
+                    "url_foto_perfil" : { "type" : "string", "description" : "URL for the profile img of the Musician"},
+                    "url_video_presentacion" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "string"
+                      },
+                      "description" : "An Array with the url for the videos of the Musician"
+                    },
+                    "redes_sociales" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "nombre" : { "type" : "string" , "description" : "Name of the Social media" },
+                          "url" : { "type" : "string", "description" : "URL to the Social Media" }
+                        }
+                      },
+                      "description" : "An Array with the url for the videos of the Musician"
+                    },
+                    "telefono" : { "type" : "string" , "description" : "Phone of the Musician" }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
