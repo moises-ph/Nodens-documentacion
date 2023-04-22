@@ -24,6 +24,19 @@
       "description" : "Service to publish Offers and aplicate to them"
     }
   ],
+  "components" : {
+    "securitySchemes" : {
+      "Authentication" : {
+        "type" : "http",
+        "scheme" : "basic"
+      }
+    }
+  },
+  "security" : [
+    {
+      "Authentication" : []
+    }
+  ],
   "paths" : {
     "/api/auth/login" : {
       "post" : {
@@ -500,8 +513,93 @@
         }
       }
     },
+    "/api/user" : {
+      "get" : {
+        "tags" : ["Auth"],
+        "summary" : "Get the information of the User",
+        "description" : "Get the information of the User, you have to send Authentication token in Headers to get itfFFFFFFFFZ<",
+        "security" : [
+          {
+            "Authentication" : []
+          }
+        ]
+      }
+    },
     "/api/user/Register" : {
-      
+      "post" : {
+        "tags" : ["Auth"],
+        "summary" : "Register in Nodens",
+        "description" : "Route to register an User in Nodens, only required information to authenticate.",
+        "operationId" : "register",
+        "requestBody" : {
+          "description" : "Requested data to register an User in Nodens, it requires a Rol that will determinate the rest of the information for the User.",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "email": { "type" : "string" },
+                  "userName": { "type" : "string" },
+                  "rol": { "type" : "string" },
+                  "password": { "type" : "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "Unexpected Error while saving the user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "Message" : "Some error"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Succesful Register",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" },
+                    "url" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "Message" : "Usuario registrado correctamente",
+                    "url" : "hereGoesTheUrlToVerifyTheEmail"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Unexpected Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "Message" : "Some error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
