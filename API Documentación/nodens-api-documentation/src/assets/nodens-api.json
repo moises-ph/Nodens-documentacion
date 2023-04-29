@@ -22,6 +22,10 @@
     {
       "name" : "Offers",
       "description" : "Service to publish Offers and aplicate to them"
+    },
+    {
+      "name": "Mailer",
+      "description": "Service to send mails on some events in the application"
     }
   ],
   "components" : {
@@ -1104,6 +1108,312 @@
                   "example" : {
                     "token" : "",
                     "message" : "Invalid Cookies"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mailer": {
+      "post":{
+        "tags": ["Mailer"],
+        "summary": "Send Mails",
+        "descripcion": "Send mail on application to an offer to the applicant",
+        "operationId": "mailer",
+       "requestBody": {
+          "description": "The requested data to send the mail to the applicant",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type":"object",
+                "properties": {
+                  "ReceiverEmail": {"type": "string"},
+                  "ReceiverName": {"type": "string"}, 
+                  "OfferID": {"type": "string"},
+                  "OfferTitle": {"type": "string"},
+                  "OrganizerName": {"type": "string"},
+                  "OrganizerId": {"type": "string"},
+                  "EntrepriseName": {"type": "string"}
+                },
+                "required": ["ReceiverEmail", "ReceiverName", "OfferID", "OfferTitle", "OrganizerName", "OrganizerId", "EntrepriseName"]
+              },
+              "examples": {
+                "mail": {
+                  "summary": "Mail to applicant example",
+                  "value": {
+                    "ReceiverEmail": "you@email.com",
+                    "ReceiverName": "Your Name", 
+                    "OfferID": "1",
+                    "OfferTitle": "Your offer's title",
+                    "OrganizerName": "organizer name",
+                    "OrganizerId": "1",
+                    "EntrepriseName": "Cool Enterprise Name"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Aplicacion correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  },
+                  "example":{
+                    "message": "Aplicacion correcta"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description" : "Fields missing",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "statusCode": {"type": "integer"},
+                    "error": {"type": "string"},
+                    "message": {"type": "string"}
+                  },
+                  "example" : {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "Expected double-quoted property name in JSON at position 169"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mailer/organizer": {
+      "post":{
+        "tags": ["Mailer"],
+        "summary": "Send Mails",
+        "descripcion": "Send mail on application to an offer to the organizer",
+        "operationId": "mailer",
+       "requestBody": {
+          "description": "The requested data to send the mail to the organizer",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type":"object",
+                "properties": {
+                  "ReceiverEmail": {"type": "string"},
+                  "OfferID": {"type": "string"},
+                  "OfferTitle": {"type": "string"},
+                  "ApplicantId": {"type": "string"},
+                  "ApplicantName": {"type": "string"},
+                  "ApplicantEmail": {"type": "string"}
+                },
+                "required": ["ReceiverEmail", "OfferID", "OfferTitle", "ApplicantId", "ApplicantName, ApplicantEmail"]
+              },
+              "examples": {
+                "mail": {
+                  "summary": "Mail to organizer example",
+                  "value": {
+                    "ReceiverEmail": "you@email.com",
+                    "OfferID": "1",
+                    "OfferTitle": "Your offer's title",
+                    "ApplicantId": "1",
+                    "ApplicantName": "Some name",
+                    "ApplicantEmail": "another@email.com"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Aplicacion correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  },
+                  "example":{
+                    "message": "Alguien a aplicado a tu oferta de empleo"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description" : "Fields missing",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "statusCode": {"type": "integer"},
+                    "error": {"type": "string"},
+                    "message": {"type": "string"}
+                  },
+                  "example" : {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "Expected double-quoted property name in JSON at position 169"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mailer/verify": {
+      "post":{
+        "tags": ["Mailer"],
+        "summary": "Send Mails",
+        "descripcion": "Send mail to the user to verify account",
+        "operationId": "mailer",
+        "requestBody": {
+          "description": "The requested data to send the mail to the user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type":"object",
+                "properties": {
+                  "UserName": {"type": "string"},
+                  "ReceiverEmail": {"type": "string"},
+                  "URL": {"type": "string"}
+                },
+                "required": ["ReceiverEmail", "OfferID", "OfferTitle", "ApplicantId", "ApplicantName, ApplicantEmail"]
+              },
+              "examples": {
+                "mail": {
+                  "summary": "Mail to organizer example",
+                  "value": {
+                    "UserName": "Some name",
+                    "ReceiverEmail": "some@email.com",
+                    "URL": "www.nodens.netlify.app"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Verificar email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  },
+                  "example":{
+                    "message": "Verifica tu email"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description" : "Fields missing",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "statusCode": {"type": "integer"},
+                    "error": {"type": "string"},
+                    "message": {"type": "string"}
+                  },
+                  "example" : {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "Expected double-quoted property name in JSON at position 169"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mailer/recovery": {
+      "post":{
+        "tags": ["Mailer"],
+        "summary": "Send Mails",
+        "descripcion": "Send mail to the user recover the password",
+        "operationId": "mailer",
+        "requestBody": {
+          "description": "The requested data to send the mail to the user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type":"object",
+                "properties": {
+                  "UserName": {"type": "string"},
+                  "ReceiverEmail": {"type": "string"},
+                  "URL": {"type": "string"}
+                },
+                "required": ["ReceiverEmail", "OfferID", "OfferTitle", "ApplicantId", "ApplicantName, ApplicantEmail"]
+              },
+              "examples": {
+                "mail": {
+                  "summary": "Mail to recover password",
+                  "value": {
+                    "UserName": "Some name",
+                    "ReceiverEmail": "some@email.com",
+                    "URL": "www.nodens.netlify.app"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Recuperar contraseña",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  },
+                  "example":{
+                    "message": "Recupera tu contraseña"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description" : "Fields missing",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "statusCode": {"type": "integer"},
+                    "error": {"type": "string"},
+                    "message": {"type": "string"}
+                  },
+                  "example" : {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "Expected double-quoted property name in JSON at position 169"
                   }
                 }
               }
