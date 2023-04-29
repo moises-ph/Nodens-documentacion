@@ -980,8 +980,8 @@
       },
       "post" : {
         "tags" : ["Musicians"],
-        "summary" : "si",
-        "description" : "si",
+        "summary" : "Musician post",
+        "description" : "The POST route verifies access permission with an authentication token. If the permission is valid, it post information about a musician. If not, it returns an error message",
         "responses" : {
           "200" : {
             "description" : "Succesful Post",
@@ -1056,7 +1056,61 @@
           }
         }
       },
-      ""
+      "delete" : {
+        "tag" :["Musicians"],
+        "summary" : "Musician delete",
+        "descripcion" : "The PUT route verifies the access permission with an auth token and the id. If the permission is valid, it will delete the musician",
+        "response" : {
+          "200" : {
+            "description" : "Succesful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "IdAuth" : {"type" : "integer", "description" : "ID in the Auth Service"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : ["Auth"],
+        "summary" : "Musician Put",
+        "description" : "The PUT route verifies access permission with an authentication token. If the permission is valid, it update information about a musician. If not, it returns an error message",
+        "operationId" : "tokenRenew",
+        "parameters" : [
+          {
+            "name" : "token",
+            "in" : "query",
+            "schema" : {
+              "type": "string"
+            }
+          }
+        ],
+        "responses" : {
+          "401" : {
+            "description" : "Invalid Cookies or Unexpected error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "token" : {"type" : "string"},
+                    "message" : {"type" : "string"}
+                  },
+                  "example" : {
+                    "token" : "",
+                    "message" : "Invalid Cookies"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
