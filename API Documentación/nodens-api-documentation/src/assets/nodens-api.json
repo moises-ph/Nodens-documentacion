@@ -538,16 +538,11 @@
         }
       }
     },
-    "/api/user" : {
+    "/api/user/{id}" : {
       "get" : {
         "tags" : ["Auth"],
         "summary" : "Get the information of the User",
-        "description" : "Get the information of the User, you have to send Authentication token in Headers to get itfFFFFFFFFZ<",
-        "security" : [
-          {
-            "Authentication" : []
-          }
-        ],
+        "description" : "Get the information of the User, you can send the email, the username or the Id on the url param to get that User",
         "operationId" : "getuser",
         "responses" : {
           "200" : {
