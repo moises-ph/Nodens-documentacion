@@ -1111,6 +1111,49 @@
         }
       }
     },
+    "/Organizer": {
+      "get" : {
+        "tags" : ["Organizers"],
+        "summary" : "Orgamizers Login",
+        "description" : "The GET route verifies access permission with an authentication token. If the permission is valid, it returns information about a Organizers. If not, it returns an error message",
+        "responses" : {
+          "200" : {
+            "description" : "Succesful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "IdAuth" : {"type" : "integer", "description" : "ID in the Auth Service"},
+                    "Name" : {"type" : "string", "description" : "The name of the instrument"},
+                    "Lastname" : {"type" : "string", "description" : "Lastname of the Organizer"},
+                    "telefono" : {"type" : "string" , "description" : "Phone of the Organizer"},
+                    "Nombre_Empresa" : {"type" : "string", "descripcion" : "Name of the enterprise"},
+                    "description_enterprise" : "creation date of the enterprise"},
+                    "pais" : {"type" : "string", "description" : "Country of the organizer"}, 
+                    "fecha_nacimiento" : {"type" : "string", "format" : "date"}, 
+                    "genero" : {"type" : "string", "description" : "The gender of the organizer"},
+                    "ciudad" : {"type" : "string", "description": "City of the Organizer"},
+                    "url_logo" : {"type":"string","descripcion":"URL for the logo of the enterprise"},
+                    "url_foto_perfil" : {"type":"string","description":"URL for the profile img of the Musician"},
+                    "redes_sociales" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "nombre" : { "type" : "string" , "description" : "Name of the Social media" },
+                          "url" : { "type" : "string", "description" : "URL to the Social Media" }
+                        }
+                      }
+                    }
+                  }  
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/mailer": {
       "post":{
         "tags": ["Mailer"],
