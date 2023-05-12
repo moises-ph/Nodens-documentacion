@@ -1056,7 +1056,7 @@
         }
       },
       "delete" : {
-        "tag" :["Musicians"],
+        "tags" :["Musicians"],
         "summary" : "Musician delete",
         "descripcion" : "The PUT route verifies the access permission with an auth token and the id. If the permission is valid, it will delete the musician",
         "response" : {
@@ -1152,7 +1152,6 @@
             }
           }
         }
-      }
     },
     "/mailer": {
       "post":{
