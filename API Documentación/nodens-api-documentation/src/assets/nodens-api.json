@@ -6,6 +6,9 @@
     "version" : "0.1.0",
     "termsOfService" : "http://swagger.io/terms/"
   },
+  "servers": [
+    {"url": "https://nodensapim.azure-api.net"}
+  ],
   "tags" : [
     {
       "name" : "Auth",
@@ -37,7 +40,7 @@
     }
   },
   "paths" : {
-    "/api/auth/login" : {
+    "/auth/api/auth/login" : {
       "post" : {
         "tags" : ["Auth"],
         "summary" : "Log in Nodens",
@@ -110,7 +113,7 @@
         }
       }
     },
-    "/api/auth/renew" : {
+    "/auth/api/auth/renew" : {
       "put" : {
         "tags" : ["Auth"],
         "summary" : "Renew Authentication token",
@@ -147,7 +150,7 @@
         }
       }
     },
-    "/api/auth/recovery/pre" : {
+    "/auth/api/auth/recovery/pre" : {
       "post" : {
         "tags" : ["Auth"],
         "summary" : "Recovery Password: 1° Step",
@@ -231,7 +234,7 @@
         }
       }
     },
-    "/api/auth/recovery/request" : {
+    "/auth/api/auth/recovery/request" : {
       "post" : {
         "tags" : ["Auth"],
         "summary" : "Recovery Password: 2° Step",
@@ -291,7 +294,7 @@
         }
       }
     },
-    "/api/auth/recovery/reset" : {
+    "/auth/api/auth/recovery/reset" : {
       "put" : {
         "tags" : ["Auth"],
         "summary" : "Recovery Password: 3° Step",
@@ -404,7 +407,7 @@
         }
       }
     },
-    "/api/auth/verify" : {
+    "/auth/api/auth/verify" : {
       "put" : {
         "tags" : ["Auth"],
         "summary" : "Verify the Email",
@@ -468,7 +471,7 @@
         }
       }
     },
-    "/api/auth/verify/req" : {
+    "/auth/api/auth/verify/req" : {
       "post" : {
         "tags" : ["Auth"],
         "summary" : "Request a Verification for the Email",
@@ -547,7 +550,7 @@
         }
       }
     },
-    "/api/user/{id}" : {
+    "/auth/api/user/{id}" : {
       "get" : {
         "tags" : ["Auth"],
         "summary" : "Get the information of the User",
@@ -589,7 +592,7 @@
         }
       }
     },
-    "/api/user/Register" : {
+    "/auth/api/user/Register" : {
       "post" : {
         "tags" : ["Auth"],
         "summary" : "Register in Nodens",
@@ -665,7 +668,7 @@
         }
       }
     },
-    "/api/user/update" : {
+    "/auth/api/user/update" : {
       "put" : {
         "tags" : ["Auth"],
         "summary" : "Update User",
@@ -732,7 +735,7 @@
         }
       }
     },
-    "/musician/all" : {
+    "/musicians/musician/all" : {
       "get" : {
         "tags" : ["Musicians"],
         "summary" : "Get all Musicians",
@@ -812,7 +815,7 @@
         }
       }
     },
-    "/musician/{id}" : {
+    "/musicians/musician/{id}" : {
       "get" : {
         "tags" : ["Musicians"],
         "summary": "Get a Musician by his Id",
@@ -902,7 +905,7 @@
         }
       }
     },
-    "/musician/" : {
+    "/musicians/musician/" : {
       "get" : {
         "tags" : ["Musicians"],
         "summary" : "Musician Login",
@@ -1078,7 +1081,7 @@
         "tags" :["Musicians"],
         "summary" : "Musician delete",
         "description" : "The PUT route verifies the access permission with an auth token and the id. If the permission is valid, it will delete the musician",
-        "response" : {
+        "responses" : {
           "200" : {
             "description" : "Succesful",
             "content" : {
@@ -1130,7 +1133,7 @@
         }
       }
     },
-    "/musician/uploadVideo" : {
+    "/musicians/musician/uploadVideo" : {
       "post" : {
         "tags" : ["Musicians"],
         "operationId" : "postmusicianvideos",
@@ -1172,7 +1175,7 @@
         }
       }
     },
-    "/musician/profile" : {
+    "/musicians/musician/profile" : {
       "post" : {
         "tags" : ["Musicians"],
         "summary" : "Post Musician's profile",
@@ -1226,7 +1229,7 @@
         }
       }
     },
-    "/Organizer": {
+    "/organizers/Organizer": {
       "get" : {
         "tags" : ["Organizers"],
         "summary" : "Organizers Login",
@@ -1707,7 +1710,363 @@
           }
         }
       }
-    }
+    },
+    "/offers/offers" : {
+      "get" : {
+        "tags": ["Offers"],
+        "summary": "Get all the Offers",
+        "description": "Route to get all the Offers. \n This route doesn't give the Applicants, the Applicants are only visible for Organizer",
+        "responses": {
+          "200" : {
+            "description": "All the offers",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "array",
+                  "items" : {
+                    "type": "object",
+                    "properties": {
+                      "Title" : { "type": "string" },
+                      "Description" : { "type": "string" },
+                      "Creation_Date" : { "type": "string", "format": "date" },
+                      "Event_Date" : { "type": "string", "format": "date" },
+                      "Payment" : { "type": "number" },
+                      "OrganizerId" : { "type": "number" },
+                      "Event_Ubication" : {
+                        "type": "object",
+                        "properties": {
+                          "City" :  { "type": "string" },
+                          "Street" : { "type" : "string" },
+                          "Career" : { "type" : "string" },
+                          "SiteNumber" : { "type" : "string" },
+                          "Town" : { "type" : "string" }
+                        },
+                        "required": ["City", "SiteNumber", "Town"]
+                      },
+                      "Img" : { "type" : "string" },
+                      "Requeriments" : {
+                        "type": "array",
+                        "items" : {
+                          "type": "object",
+                          "properties": {
+                            "Description" : { "type" : "string" }
+                          },
+                          "required": ["Description"]
+                        }
+                      },
+                      "Vacants" : { "type" : "number" },
+                      "isAvailable" : { "type" : "boolean" },
+                      "tags" : { "type": "array", "items" : { "type": "string" } }
+                    },
+                    "required": ["Title", "Description", "Creation_Date", "Event_Date", "Payment", "OrganizerId", "Event_Ubication", "Applicants", "Img", "Requeriments", "isAvailable", "tags"]
+                  }
+                },
+                "example" : {
+                  "Title": "Una oferta",
+                  "Description": "No sé",
+                  "Creation_Date": "2023-05-11T02:07:05.128Z",
+                  "Event_Date": "2023-05-20T19:07:00.000Z",
+                  "Payment": 4000,
+                  "OrganizerId": 18,
+                  "Event_Ubication": {
+                    "City": "Armenia",
+                    "SiteNumber": "10-11",
+                    "Town": "El Granada"
+                  },
+                  "Img": "si",
+                  "Requeriments": [
+                    {
+                      "Description": "3 años de experiencia en congas"
+                    }
+                  ],
+                  "Vacants": 3,
+                  "isAvailable": false,
+                  "tags": [
+                    "una tag"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags": ["Offers"],
+        "summary": "Get all the offers that match with request body tags",
+        "description": "This route give a response with all the offers where it tags matche with request body tags",
+        "requestBody" : {
+          "description": "Body with tags",
+          "content": {
+            "application/json" : {
+              "schema" : {
+                "type": "object",
+                "properties": {
+                  "Tags" : { "type": "array", "items" : { "type": "string" } }
+                },
+                "required": ["Tags"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200" : {
+            "description": "Offers with x tags",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "array",
+                  "items" : {
+                    "type": "object",
+                    "properties": {
+                      "Title" : { "type": "string" },
+                      "Description" : { "type": "string" },
+                      "Creation_Date" : { "type": "string", "format": "date" },
+                      "Event_Date" : { "type": "string", "format": "date" },
+                      "Payment" : { "type": "number" },
+                      "OrganizerId" : { "type": "number" },
+                      "Event_Ubication" : {
+                        "type": "object",
+                        "properties": {
+                          "City" :  { "type": "string" },
+                          "Street" : { "type" : "string" },
+                          "Career" : { "type" : "string" },
+                          "SiteNumber" : { "type" : "string" },
+                          "Town" : { "type" : "string" }
+                        },
+                        "required": ["City", "SiteNumber", "Town"]
+                      },
+                      "Img" : { "type" : "string" },
+                      "Requeriments" : {
+                        "type": "array",
+                        "items" : {
+                          "type": "object",
+                          "properties": {
+                            "Description" : { "type" : "string" }
+                          },
+                          "required": ["Description"]
+                        }
+                      },
+                      "Vacants" : { "type" : "number" },
+                      "isAvailable" : { "type" : "boolean" },
+                      "tags" : { "type": "array", "items" : { "type": "string" } }
+                    },
+                    "required": ["Title", "Description", "Creation_Date", "Event_Date", "Payment", "OrganizerId", "Event_Ubication", "Applicants", "Img", "Requeriments", "isAvailable", "tags"]
+                  }
+                },
+                "example" : {
+                  "Title": "Una oferta",
+                  "Description": "No sé",
+                  "Creation_Date": "2023-05-11T02:07:05.128Z",
+                  "Event_Date": "2023-05-20T19:07:00.000Z",
+                  "Payment": 4000,
+                  "OrganizerId": 18,
+                  "Event_Ubication": {
+                    "City": "Armenia",
+                    "SiteNumber": "10-11",
+                    "Town": "El Granada"
+                  },
+                  "Img": "si",
+                  "Requeriments": [
+                    {
+                      "Description": "3 años de experiencia en congas"
+                    }
+                  ],
+                  "Vacants": 3,
+                  "isAvailable": false,
+                  "tags": [
+                    "una tag"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags": ["Offers"],
+        "summary": "Create an Offer",
+        "description": "Createn Offer, this route requires Auth token in Headers",
+        "requestBody" : {
+          "description": "Body with the Offer",
+          "content": {
+            "application/json" : {
+              "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "Title" : { "type" : "string" },
+                    "Description" : { "type" : "string" },
+                    "Creation_Date" : { "type" : "string", "format" : "date-time" },
+                    "Event_Date" : { "type" : "string", "format" : "date-time" },
+                    "Payment" : { "type" : "integer" },
+                    "OrganizerId" : { "type" : "integer" },
+                    "Event_Ubication" : { 
+                        "type" : "object",
+                        "properties" : {
+                            "Career" : { "type" : "string" },
+                            "Street" : { "type" : "string" },
+                            "City" : { "type" : "string" },
+                            "SiteNumber" : { "type" : "string" },
+                            "Town" : { "type" : "string" }
+                        },
+                        "required" : ["City", "Town", "SiteNumber"]
+                    },
+                    "Img" : { "type" : "string" },
+                    "Requeriments" : {
+                        "type" : "array",
+                        "items" : {
+                            "type" : "object",
+                            "properties" : {
+                                "Description" : { "type" : "string" }
+                            },
+                            "required" : ["Description"]
+                        },
+                        "minItems" : 1
+                    },
+                    "Vacants" : { "type" : "integer" },
+                    "isAvailable" : { "type" : "boolean" },
+                    "tags" : { "type" : "array", "items" : { "type" : "string" } }
+                },
+                "required" : ["Title", "Description", "Vacants", "isAvailable", "Event_Date", "Payment", "Event_Ubication", "Requeriments", "tags"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200" : {
+            "description": "Offer posted Succesfully",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "message" : { "type": "string" }
+                  }
+                },
+                "example" : {
+                  "message" : "Oferta creada correctamente"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description": "Unexpected error",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "err" : {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description": "Validation Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "statusCode" : { "type": "number" },
+                    "error" : { "type": "string" },
+                    "message" : { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offers/offers/organizer" : {
+      "get" : {
+        "tags": ["Offers"],
+        "summary": "Get offers that an Organizer posted (requires Auth token in headers)",
+        "description": "This route get the Offers that an Organizer posted, requires Auth token from an Organizer's session and all the offers have the Applicants field",
+        "responses": {
+          "200" : {
+            "description": "Offers by the Organizer",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                        "Title" : { "type" : "string" },
+                        "Description" : { "type" : "string" },
+                        "Creation_Date" : { "type" : "string", "format" : "date-time" },
+                        "Event_Date" : { "type" : "string", "format" : "date-time" },
+                        "Payment" : { "type" : "integer" },
+                        "OrganizerId" : { "type" : "integer" },
+                        "Event_Ubication" : { 
+                            "type" : "object",
+                            "properties" : {
+                                "Career" : { "type" : "string" },
+                                "Street" : { "type" : "string" },
+                                "City" : { "type" : "string" },
+                                "SiteNumber" : { "type" : "string" },
+                                "Town" : { "type" : "string" }
+                            },
+                            "required" : ["City", "Town", "SiteNumber"]
+                        },
+                        "Applicants" : {
+                            "type" : "array",
+                            "items" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "ApplicantId" : { "type" : "string" },
+                                    "PostulationDate" : { "type" : "string", "format" : "date" },
+                                    "PostulationFullName" : { "type" : "string", "format" : "date" },
+                                    "PostulationStatus" : { "type" : "string", "enum" : ["aplied", "evaluated", "acepted"] }
+                                },
+                                "required" : ["ApplicantId", "PostulationDate", "PostulationFullName", "PostulationStatus"]
+                            },
+                            "minItems" : 0
+                        },
+                        "Img" : { "type" : "string" },
+                        "Requeriments" : {
+                            "type" : "array",
+                            "items" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "Description" : { "type" : "string" }
+                                },
+                                "required" : ["Description"]
+                            },
+                            "minItems" : 1
+                        },
+                        "Vacants" : { "type" : "integer" },
+                        "isAvailable" : { "type" : "boolean" },
+                        "tags" : { "type" : "array", "items" : { "type" : "string" } }
+                    },
+                    "required" : ["Title", "Description", "Vacants", "isAvailable", "Event_Date", "Payment", "Event_Ubication", "Requeriments", "tags"]
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description": "Validation Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "statusCode" : { "type": "number" },
+                    "error" : { "type": "string" },
+                    "message" : { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offers/offers/musician" : {}
   }
 }
 
