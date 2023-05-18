@@ -45,7 +45,6 @@
         "tags" : ["Auth"],
         "summary" : "Log in Nodens",
         "description" : "Get Credentials for logining in Nodens",
-        "operationId" : "login",
         "requestBody" : {
           "description" : "The requested data to Log In",
           "content" : {
@@ -118,7 +117,6 @@
         "tags" : ["Auth"],
         "summary" : "Renew Authentication token",
         "description" : "Renew the token (The token expires at 15 minutes)",
-        "operationId" : "tokenRenew",
         "parameters" : [
           {
             "name" : "token", 
@@ -155,7 +153,6 @@
         "tags" : ["Auth"],
         "summary" : "Recovery Password: 1° Step",
         "description" : "This is the first step to recovery the password, here you request a change to the password.\nThe system creates a session of 30 minutes to change the password, after that time the user will have to do the request another time",
-        "operationId" : "recoveryPass1",
         "parameters" : [
           {
             "name" : "Email",
@@ -239,7 +236,6 @@
         "tags" : ["Auth"],
         "summary" : "Recovery Password: 2° Step",
         "description" : "This is the second step to recovery the password, here you recieve the token to change the password.",
-        "operationId" : "recoveryPass2",
         "parameters" : [
           {
             "name" : "gdusr",
@@ -299,7 +295,6 @@
         "tags" : ["Auth"],
         "summary" : "Recovery Password: 3° Step",
         "description" : "This is the las step, here you send the token given in the step before in the headers like an authentication, and send the password in the URL Query",
-        "operationId" : "recoveryPass3",
         "parameters" : [
           {
             "name" : "pass",
@@ -412,7 +407,6 @@
         "tags" : ["Auth"],
         "summary" : "Verify the Email",
         "description" : "This URL normally is sended to the email, but it's also in the response when the user get register in the platform. Here you send some credentials to validate the Email, the credentials expires in 1 hour",
-        "operationId" : "verifyUser",
         "parameters" : [
           {
             "name" : "em",
@@ -476,7 +470,6 @@
         "tags" : ["Auth"],
         "summary" : "Request a Verification for the Email",
         "description" : "Request a new Verification Link to Verify the User, usually this happens when the URL Sended when Register expires",
-        "operationId" : "requestVerifyUser",
         "requestBody" : {
           "description" : "The Email for Request a Verification URL",
           "content" : {
@@ -555,7 +548,6 @@
         "tags" : ["Auth"],
         "summary" : "Get the information of the User",
         "description" : "Get the information of the User, you can send the email, the username or the Id on the url param to get that User",
-        "operationId" : "getuser",
         "responses" : {
           "200" : {
             "description" : "The User",
@@ -597,7 +589,6 @@
         "tags" : ["Auth"],
         "summary" : "Register in Nodens",
         "description" : "Route to register an User in Nodens, only required information to authenticate.",
-        "operationId" : "register",
         "requestBody" : {
           "description" : "Requested data to register an User in Nodens, it requires a Rol that will determinate the rest of the information for the User.",
           "content" : {
@@ -673,7 +664,6 @@
         "tags" : ["Auth"],
         "summary" : "Update User",
         "description" : "Update the User info, the Authentication token is required",
-        "operationId" : "updateUser",
         "requestBody" : {
           "description" : "The Information for Update",
           "content" : {
@@ -1101,7 +1091,6 @@
         "tags" : ["Musicians"],
         "summary" : "Musician Put",
         "description" : "The PUT route verifies access permission with an authentication token. If the permission is valid, it update information about a musician. If not, it returns an error message",
-        "operationId" : "tokenRenew",
         "parameters" : [
           {
             "name" : "token",
@@ -1136,7 +1125,6 @@
     "/musicians/musician/uploadVideo" : {
       "post" : {
         "tags" : ["Musicians"],
-        "operationId" : "postmusicianvideos",
         "summary" : "Upload Videos or Images to Musician's profile",
         "description" : "This route requires Auth Token in headers and multipart/form-data mimetype in Headers also. Send a tuple with key of the video or image and the file in the body (the key can be whatever, it doesn't affect the process). \n Also can take several seconds or even minutes to response.",
         "responses" : {
@@ -1373,7 +1361,6 @@
         "tags" : ["Organizers"],
         "summary" : "Musician Put",
         "description" : "The PUT route verifies access permission with an authentication token. If the permission is valid, it update information about a musician. If not, it returns an error message",
-        "operationId" : "tokenRenew",
         "parameters" : [
           {
             "name" : "token",
@@ -1410,7 +1397,6 @@
         "tags": ["Mailer"],
         "summary": "Send Mails",
         "description": "Send mail on application to an offer to the applicant",
-        "operationId": "mailer",
        "requestBody": {
           "description": "The requested data to send the mail to the applicant",
           "content": {
@@ -1491,7 +1477,6 @@
         "tags": ["Mailer"],
         "summary": "Send Mails",
         "description": "Send mail on application to an offer to the organizer",
-        "operationId": "mailer",
        "requestBody": {
           "description": "The requested data to send the mail to the organizer",
           "content": {
@@ -1570,7 +1555,6 @@
         "tags": ["Mailer"],
         "summary": "Send Mails",
         "description": "Send mail to the user to verify account",
-        "operationId": "mailer",
         "requestBody": {
           "description": "The requested data to send the mail to the user",
           "content": {
@@ -1643,7 +1627,6 @@
         "tags": ["Mailer"],
         "summary": "Send Mails",
         "description": "Send mail to the user recover the password",
-        "operationId": "mailer",
         "requestBody": {
           "description": "The requested data to send the mail to the user",
           "content": {
@@ -2047,17 +2030,59 @@
                 }
               }
             }
-          },
-          "400" : {
-            "description": "Validation Error",
-            "content" : {
+          }
+        }
+      }
+    },
+    "/offers/offers/musician" : {
+      "get" : {
+        "tags": ["Offers"],
+        "summary": "Get offers that an Musicians postulated (requires Auth token in headers)",
+        "description": "This route get the Offers that an Musician postulated, requires Auth token from an Musician's session and the offers doesn't give the Applicants field",
+        "responses": {
+          "200" : {
+            "description": "Offers Postulated by a Musician",
+            "content": {
               "application/json" : {
                 "schema" : {
-                  "type": "object",
-                  "properties": {
-                    "statusCode" : { "type": "number" },
-                    "error" : { "type": "string" },
-                    "message" : { "type": "string" }
+                  "type": "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                        "Title" : { "type" : "string" },
+                        "Description" : { "type" : "string" },
+                        "Creation_Date" : { "type" : "string", "format" : "date-time" },
+                        "Event_Date" : { "type" : "string", "format" : "date-time" },
+                        "Payment" : { "type" : "integer" },
+                        "OrganizerId" : { "type" : "integer" },
+                        "Event_Ubication" : { 
+                            "type" : "object",
+                            "properties" : {
+                                "Career" : { "type" : "string" },
+                                "Street" : { "type" : "string" },
+                                "City" : { "type" : "string" },
+                                "SiteNumber" : { "type" : "string" },
+                                "Town" : { "type" : "string" }
+                            },
+                            "required" : ["City", "Town", "SiteNumber"]
+                        },
+                        "Img" : { "type" : "string" },
+                        "Requeriments" : {
+                            "type" : "array",
+                            "items" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "Description" : { "type" : "string" }
+                                },
+                                "required" : ["Description"]
+                            },
+                            "minItems" : 1
+                        },
+                        "Vacants" : { "type" : "integer" },
+                        "isAvailable" : { "type" : "boolean" },
+                        "tags" : { "type" : "array", "items" : { "type" : "string" } }
+                    },
+                    "required" : ["Title", "Description", "Vacants", "isAvailable", "Event_Date", "Payment", "Event_Ubication", "Requeriments", "tags"]
                   }
                 }
               }
@@ -2065,8 +2090,7 @@
           }
         }
       }
-    },
-    "/offers/offers/musician" : {}
+    }
   }
 }
 
