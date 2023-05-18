@@ -36,11 +36,6 @@
       }
     }
   },
-  "security" : [
-    {
-      "Authentication" : []
-    }
-  ],
   "paths" : {
     "/api/auth/login" : {
       "post" : {
@@ -311,6 +306,20 @@
             }
           }
         ],
+        "requestBody" :{
+          "description": "Body to change the password",
+          "content": {
+            "applicatio/json" : {
+              "schema" : {
+                "type": "object",
+                "properties": {
+                  "Password" : { "type": "string" }
+                },
+                "required": ["Password"]
+              }
+            }
+          }
+        },
         "responses" : {
           "404" : {
             "description" : "The URL Expired, the session is running up until the password changes (this step)",
@@ -661,11 +670,6 @@
         "tags" : ["Auth"],
         "summary" : "Update User",
         "description" : "Update the User info, the Authentication token is required",
-        "security" : [
-          {
-            "Authentication" : []
-          }
-        ],
         "operationId" : "updateUser",
         "requestBody" : {
           "description" : "The Information for Update",
@@ -1225,7 +1229,7 @@
     "/Organizer": {
       "get" : {
         "tags" : ["Organizers"],
-        "summary" : "Orgamizers Login",
+        "summary" : "Organizers Login",
         "description" : "The GET route verifies access permission with an authentication token. If the permission is valid, it returns information about a Organizers. If not, it returns an error message",
         "responses" : {
           "200" : {
@@ -1266,8 +1270,8 @@
       },
       "post" : {
         "tags" : ["Organizers"],
-        "summary" : "Orgamizers post",
-        "description" : "The POST route verifies access permission with an authentication token. If the permission is valid, it post information about a Orgamizers. If not, it returns an error message",
+        "summary" : "Organizers post",
+        "description" : "The POST route verifies access permission with an authentication token. If the permission is valid, it post information about a Organizers. If not, it returns an error message",
         "responses" : {
           "200" : {
             "description" : "Succesful Post",
@@ -1343,10 +1347,10 @@
         }
       },
       "delete" : {
-        "tag" :["Musicians"],
+        "tags" :["Organizers"],
         "summary" : "Musician delete",
         "description" : "The PUT route verifies the access permission with an auth token and the id. If the permission is valid, it will delete the musician",
-        "response" : {
+        "responses" : {
           "200" : {
             "description" : "Succesful",
             "content" : {
@@ -1363,7 +1367,7 @@
         }
       },
       "put" : {
-        "tags" : ["Auth"],
+        "tags" : ["Organizers"],
         "summary" : "Musician Put",
         "description" : "The PUT route verifies access permission with an authentication token. If the permission is valid, it update information about a musician. If not, it returns an error message",
         "operationId" : "tokenRenew",
