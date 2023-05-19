@@ -2248,6 +2248,17 @@
         "summary": "Get single offer",
         "description": "Get single offer by an Id, this doesn't have the Applicants field",
         "tags": ["Offers"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the Offer"
+          }
+        ],
         "responses": {
           "200" : {
             "description": "The Single Offer",
@@ -2297,8 +2308,20 @@
         }
       },
       "put" : {
+        "tags": ["Offers"],
         "summary": "Postulate a Musician",
         "description": "This route is Musicians Only, it's for postulate a Musician to an Offer so the Organizer can see him/her",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the Offer"
+          }
+        ],
         "requestBody" : {
           "description": "The body to Postulate a Musician",
           "content": {
@@ -2314,6 +2337,170 @@
             }
           },
           "required": true
+        },
+        "responses": {
+          "500" : {
+            "description": "Any error",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "err" : {"type": "string"}
+                  }
+                },
+                "example" : {
+                  "err" : "El organizador no existe"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "summary": "Delete an Offer",
+        "description": "Delete an Offer made by the Organizer's session",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the Offer"
+          }
+        ],
+        "tags": ["Offers"],
+        "responses": {
+          "200" : {
+            "description": "Offer successfully deleted",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "message" : { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description": "Error deleting the offer",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "message" : { "type": "string" },
+                    "statusCode" : { "type": "integer" },
+                    "error" : { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags": ["Offers"],
+        "summary": "Disable an Offer",
+        "description": "This route is only for Organizers, here the organizer disable an Offer. Requires Auth token.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the Offer"
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Offer disabled Succesfully",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "message" : { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description": "Error disabling the offer",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "message" : { "type": "string" },
+                    "statusCode" : { "type": "integer" },
+                    "error" : { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offers/offers/changestatus" : {
+      "patch" : {
+        "summary": "Change Postulation Status",
+        "description": "This route is for Organizers only, here the organizer change the postulation status: 'aplied', 'evaluated', 'acepted'",
+        "tags": ["Offers"],
+        "requestBody" : {
+          "required": true,
+          "description": "Request body with the id of the Applicant, id of the Offer and the (enum) action",
+          "content": {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                    "OfferId" : { "type" : "string" },
+                    "ApplicantId"  : { "type" : "string" },
+                    "Action" : { "type" : "string", "enum" : ["aplied", "evaluated", "acepted"] }
+                },
+                "required" : ["OfferId", "Action", "ApplicantId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200" : {
+            "description": "Postulation changed successfully",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "message" : { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description": "Error changing the postulation state",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "message" : { "type": "string" },
+                    "statusCode" : { "type": "integer" },
+                    "error" : { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
