@@ -2191,7 +2191,76 @@
     },
     "/offers/offers/{id}" : {
       "get" : {
-        
+        "summary": "Get single offer",
+        "description": "Get single offer by an Id, this doesn't have the Applicants field",
+        "tags": ["Offers"],
+        "responses": {
+          "200" : {
+            "description": "The Single Offer",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                      "Title" : { "type" : "string" },
+                      "Description" : { "type" : "string" },
+                      "Creation_Date" : { "type" : "string", "format" : "date-time" },
+                      "Event_Date" : { "type" : "string", "format" : "date-time" },
+                      "Payment" : { "type" : "integer" },
+                      "OrganizerId" : { "type" : "integer" },
+                      "Event_Ubication" : { 
+                          "type" : "object",
+                          "properties" : {
+                              "Career" : { "type" : "string" },
+                              "Street" : { "type" : "string" },
+                              "City" : { "type" : "string" },
+                              "SiteNumber" : { "type" : "string" },
+                              "Town" : { "type" : "string" }
+                          },
+                          "required" : ["City", "Town", "SiteNumber"]
+                      },
+                      "Img" : { "type" : "string" },
+                      "Requeriments" : {
+                          "type" : "array",
+                          "items" : {
+                              "type" : "object",
+                              "properties" : {
+                                  "Description" : { "type" : "string" }
+                              },
+                              "required" : ["Description"]
+                          },
+                          "minItems" : 1
+                      },
+                      "Vacants" : { "type" : "integer" },
+                      "isAvailable" : { "type" : "boolean" },
+                      "tags" : { "type" : "array", "items" : { "type" : "string" } }
+                  },
+                  "required" : ["Title", "Description", "Vacants", "isAvailable", "Event_Date", "Payment", "Event_Ubication", "Requeriments", "tags"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary": "Postulate a Musician",
+        "description": "This route is Musicians Only, it's for postulate a Musician to an Offer so the Organizer can see him/her",
+        "requestBody" : {
+          "description": "The body to Postulate a Musician",
+          "content": {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                    "PostulationDate" : { "type" : "string", "format" : "date" },
+                    "PostulationFullName" : { "type" : "string" }
+                },
+                "required" : [ "PostulationDate", "PostulationFullName"]
+              }
+            }
+          },
+          "required": true
+        }
       }
     }
   }
