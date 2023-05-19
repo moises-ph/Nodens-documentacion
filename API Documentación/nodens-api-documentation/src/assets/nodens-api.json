@@ -2094,7 +2094,7 @@
     },
     "/offers/offers/{id}" : {
       "get" : {
-
+        
       }
     }
   }
