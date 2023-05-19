@@ -1218,7 +1218,7 @@
         }
       }
     },
-    "/organizer/organizer/all":{
+    "/organizers/organizer/all":{
         "get" : {
         "tags" : ["Organizers"],
         "summary" : "Get all Organizers",
@@ -1262,7 +1262,7 @@
         }
       }
     },
-    "/organizer/organizer/{id}" : {
+    "/organizers/organizer/{id}" : {
       "get" : {
         "tags" : ["Organizers"],
         "summary": "Get a Organizer by his Id",
@@ -1482,6 +1482,60 @@
                   "example" : {
                     "token" : "",
                     "message" : "Invalid Cookies"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizers/organizer/profile" : {
+      "post" : {
+        "tags" : ["Organizers"],
+        "summary" : "Post organizer's profile",
+        "description" : "This route requires Auth Token in headers and multipart/form-data mimetype in Headers also. Send a tuple with only one value: key of the image and the file in the body (the key can be whatever, it doesn't affect the process). \n Also can take several seconds or even minutes to response.",
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" :"array",
+                  "items" : {}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200" : {
+            "description": "Succesful profile Upload or Update of the Organizer",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "message" : { "type": "string" }
+                  },
+                  "example" : {
+                    "message" : "Foto de perfil actualizada correctamente"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "MIME Type Erro or not authorized Rol",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : { "type" : "string" }
+                  },
+                  "example" : {
+                    "message" : "No valid MIME Type for content"
                   }
                 }
               }
