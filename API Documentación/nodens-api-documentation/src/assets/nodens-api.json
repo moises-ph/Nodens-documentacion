@@ -44,7 +44,7 @@
       "post" : {
         "tags" : ["Auth"],
         "summary" : "Log in Nodens",
-        "description" : "Get Credentials for logining in Nodens",
+        "description" : "Get Credentials for logining in Nodens, in the field renewToken sends an Token to renew the auth token after 15 minutes",
         "requestBody" : {
           "description" : "The requested data to Log In",
           "content" : {
@@ -80,7 +80,8 @@
                   "properties" : {
                     "token" : { "type" : "string" },
                     "verified" : { "type" : "boolean" },
-                    "username" : { "type" : "string" }
+                    "username" : { "type" : "string" },
+                    "renewToken" : { "type" : "string" }
                   },
                   "example" : {
                     "token" : "theAuthTokenGoesHere",
@@ -116,7 +117,7 @@
       "put" : {
         "tags" : ["Auth"],
         "summary" : "Renew Authentication token",
-        "description" : "Renew the token (The token expires at 15 minutes)",
+        "description" : "Renew the token (The token expires at 15 minutes). In headers has to send the renewToken given in Login in the 'Authorization' field",
         "parameters" : [
           {
             "name" : "token", 
@@ -2186,6 +2187,11 @@
             }
           }
         }
+      }
+    },
+    "/offers/offers/{id}" : {
+      "get" : {
+
       }
     }
   }
