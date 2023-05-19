@@ -1218,6 +1218,104 @@
         }
       }
     },
+    "/organizer/organizer/all":{
+        "get" : {
+        "tags" : ["Organizers"],
+        "summary" : "Get all Organizers",
+        "description" : "All Organizers in platform",
+        "responses" : {
+          "200" : {
+            "description" : "Succesful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "IdAuth" : { "type" : "integer", "description" : "ID in the Auth Service"  },
+                    "Name" :  { "type" : "string", "description" : "Name of the Organizer"  },
+                    "Lastname" : { "type" : "string", "description" : "Lastname of the Organizer"  },
+                    "fecha_nacimiento" : { "type" : "string", "format" : "date" ,"description" : "Date of birth of the Organizer"  },
+                    "genero" : { "type" : "string", "description" : "The gender of the Organizer"  },
+                    "description" : { "type" : "string", "description" : "A description of the Organizer"  },
+                    "pais" : { "type" : "string", "description" : "Country of the Organizer"  },
+                    "ciudad" : { "type" : "string", "description" : "City of the Organizer"  },
+                    "Nombre_Empresa" : { "type" : "string", "description" : "Organizing company name"},
+                    "description_enterprise" : {"type" : "string", "description" : "description of the organizer's company"},
+                    "url_foto_perfil" : { "type" : "string", "description" : "URL for the profile img of the Organizer"},
+                    "redes_sociales" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "nombre" : { "type" : "string" , "description" : "Name of the Social media" },
+                          "url" : { "type" : "string", "description" : "URL to the Social Media" }
+                        }
+                      },
+                      "description" : "An Array with the url for the videos of the Organizer "
+                    },
+                    "telefono" : { "type" : "string" , "description" : "Phone of the Organizer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizer/organizer/{id}" : {
+      "get" : {
+        "tags" : ["Organizers"],
+        "summary": "Get a Organizer by his Id",
+        "description": "Get One Organizer with his ObjectID",
+        "parameters": [
+          {
+            "in": "path",
+            "name" : "id",
+            "schema" : {
+              "type": "string" 
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description" : "Succesful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "IdAuth" : { "type" : "integer", "description" : "ID in the Auth Service"  },
+                    "Name" :  { "type" : "string", "description" : "Name of the Organizer"  },
+                    "Lastname" : { "type" : "string", "description" : "Lastname of the Organizer"  },
+                    "fecha_nacimiento" : { "type" : "string", "format" : "date" ,"description" : "Date of birth of the Organizer"  },
+                    "genero" : { "type" : "string", "description" : "The gender of the Organizer"  },
+                    "description" : { "type" : "string", "description" : "A description of the Organizer"  },
+                    "pais" : { "type" : "string", "description" : "Country of the Organizer"  },
+                    "ciudad" : { "type" : "string", "description" : "City of the Organizer"  },
+                    "Nombre_Empresa" : { "type" : "string", "description" : "Organizing company name"},
+                    "description_enterprise" : {"type" : "string", "description" : "description of the organizer's company"},
+                    "url_foto_perfil" : { "type" : "string", "description" : "URL for the profile img of the Organizer"},
+                    "redes_sociales" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "nombre" : { "type" : "string" , "description" : "Name of the Social media" },
+                          "url" : { "type" : "string", "description" : "URL to the Social Media" }
+                        }
+                      },
+                      "description" : "An Array with the url for the videos of the Organizer"
+                    },
+                    "telefono" : { "type" : "string" , "description" : "Phone of the Organizer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/organizers/Organizer": {
       "get" : {
         "tags" : ["Organizers"],
@@ -1241,7 +1339,6 @@
                     "fecha_nacimiento" : {"type" : "string", "format" : "date"}, 
                     "genero" : {"type" : "string", "description" : "The gender of the organizer"},
                     "ciudad" : {"type" : "string", "description": "City of the Organizer"},
-                    "url_logo" : {"type":"string","description":"URL for the logo of the enterprise"},
                     "url_foto_perfil" : {"type":"string","description":"URL for the profile img of the Musician"},
                     "redes_sociales" : {
                       "type" : "array",
