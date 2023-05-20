@@ -1490,7 +1490,7 @@
         }
       }
     },
-    "/organizers/organizer/profile" : {
+    "/organizers/Organizer/profile" : {
       "post" : {
         "tags" : ["Organizers"],
         "summary" : "Post organizer's profile",
