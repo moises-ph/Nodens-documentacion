@@ -29,6 +29,10 @@
     {
       "name": "Mailer",
       "description": "Service to send mails on some events in the application"
+    },
+    {
+      "name": "Posts",
+      "description": "Service to manage user's posts"
     }
   ],
   "components" : {
@@ -2496,6 +2500,634 @@
                     "message" : { "type": "string" },
                     "statusCode" : { "type": "integer" },
                     "error" : { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/" : {
+      "get" : {
+        "summary": "Get All posts",
+        "description": "This route Get all posts, you don't require the JWT Token for this",
+        "tags": ["Posts"],
+        "responses": {
+          "200" : {
+            "description": "Array with the Posts",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "array",
+                  "items" : {
+                    "type": "object",
+                    "properties": {
+                      "id" : { "type": "string" },
+                      "user_id" : { "type": "string" },
+                      "title" : { "type": "string" },
+                      "text" : { "type": "string" },
+                      "links" : { "type": "array", "items" : { "type": "string" } },
+                      "images" : { "type": "array", "items" : { "type": "string" } },
+                      "Date" : { "type": "string", "format": "date" },
+                      "likes" : { 
+                        "type": "array", 
+                        "items" : { 
+                          "type": "object",
+                          "properties": {
+                            "user_id" : { "type": "string" }
+                          } 
+                        } 
+                      },
+                      "comments" : { 
+                        "type": "array", 
+                        "items" : { 
+                          "type": "object",
+                          "properties": {
+                            "comment_id" : { "type": "string" },
+                            "user_id" : { "type": "string" },
+                            "text" : { "type": "string" },
+                            "links" : { "type": "array", "items" : { "type": "string" } },
+                            "images" : { "type": "array", "items" : { "type": "string" } },
+                            "Responses" : { "type": "array", "items" : { "type": "object", "description": "Here there is an array with embebed comments as Responses to the parent comment" } }
+                          } 
+                        } 
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/creator/{creatorId}" : {
+      "get" : {
+        "tags": ["Posts"],
+        "summary": "Get Posts by a Cerator Id, here you don't need the JWT Token",
+        "description": "This route get the posts created by an user who's id is in the request params",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "creatorId",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the poster"
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Array with the Posts",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "array",
+                  "items" : {
+                    "type": "object",
+                    "properties": {
+                      "id" : { "type": "string" },
+                      "user_id" : { "type": "string" },
+                      "title" : { "type": "string" },
+                      "text" : { "type": "string" },
+                      "links" : { "type": "array", "items" : { "type": "string" } },
+                      "images" : { "type": "array", "items" : { "type": "string" } },
+                      "Date" : { "type": "string", "format": "date" },
+                      "likes" : { 
+                        "type": "array", 
+                        "items" : { 
+                          "type": "object",
+                          "properties": {
+                            "user_id" : { "type": "string" }
+                          } 
+                        } 
+                      },
+                      "comments" : { 
+                        "type": "array", 
+                        "items" : { 
+                          "type": "object",
+                          "properties": {
+                            "comment_id" : { "type": "string" },
+                            "user_id" : { "type": "string" },
+                            "text" : { "type": "string" },
+                            "links" : { "type": "array", "items" : { "type": "string" } },
+                            "images" : { "type": "array", "items" : { "type": "string" } },
+                            "Responses" : { "type": "array", "items" : { "type": "object", "description": "Here there is an array with embebed comments as Responses to the parent comment" } }
+                          } 
+                        } 
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/user" : {
+      "get" : {
+        "tags": ["Posts"],
+        "summary": "Get the posts published by an user",
+        "description": "This route only requires JWT Token in headers, will get the posts by Token User",
+        "responses": {
+          "200" : {
+            "description": "Array with the Posts",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "array",
+                  "items" : {
+                    "type": "object",
+                    "properties": {
+                      "id" : { "type": "string" },
+                      "user_id" : { "type": "string" },
+                      "title" : { "type": "string" },
+                      "text" : { "type": "string" },
+                      "links" : { "type": "array", "items" : { "type": "string" } },
+                      "images" : { "type": "array", "items" : { "type": "string" } },
+                      "Date" : { "type": "string", "format": "date" },
+                      "likes" : { 
+                        "type": "array", 
+                        "items" : { 
+                          "type": "object",
+                          "properties": {
+                            "user_id" : { "type": "string" }
+                          } 
+                        } 
+                      },
+                      "comments" : { 
+                        "type": "array", 
+                        "items" : { 
+                          "type": "object",
+                          "properties": {
+                            "comment_id" : { "type": "string" },
+                            "user_id" : { "type": "string" },
+                            "text" : { "type": "string" },
+                            "links" : { "type": "array", "items" : { "type": "string" } },
+                            "images" : { "type": "array", "items" : { "type": "string" } },
+                            "Responses" : { "type": "array", "items" : { "type": "object", "description": "Here there is an array with embebed comments as Responses to the parent comment" } }
+                          } 
+                        } 
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/new" : {
+      "post" : {
+        "tags": ["Posts"],
+        "summary": "Publish a new Post",
+        "description": "Create a new Post, require the JWT Token in headers",
+        "requestBody" : {
+          "description": "New Post",
+          "required": true,
+          "content": {
+            "application/json" : {
+              "schema" : {
+                "type": "object",
+                "properties": {
+                  "title" : { "type": "string" },
+                  "text" : { "type": "string" },
+                  "links" : { "type": "array", "items": { "type": "string" } },
+                  "images" : { "type": "array", "items": { "type": "string" } },
+                  "Date" : { "type": "string", "format": "date" },
+                  "likes" : { "type": "array", "items": { "type": "string" } },
+                  "comments" : { 
+                      "type": "array", 
+                      "items" : { 
+                      "type": "object",
+                      "properties": {
+                        "comment_id" : { "type": "string" },
+                        "user_id" : { "type": "string" },
+                        "text" : { "type": "string" },
+                        "links" : { "type": "array", "items" : { "type": "string" } },
+                        "images" : { "type": "array", "items" : { "type": "string" } },
+                        "Responses" : { "type": "array", "items" : { "type": "object", "description": "Here there is an array with embebed comments as Responses to the parent comment" } }
+                      },
+                      "required": ["comment_id", "user_id", "text", "links", "images", "Responses"]
+                    } 
+                  }
+                },
+                "required": ["title", "text", "links", "images", "Date", "likes", "comments"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200" : {
+            "description": "Post Created Succesfully",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "id" : { "type": "string" },
+                    "user_id" : { "type": "string" },
+                    "title" : { "type": "string" },
+                    "text" : { "type": "string" },
+                    "links" : { "type": "array", "items" : { "type": "string" } },
+                    "images" : { "type": "array", "items" : { "type": "string" } },
+                    "Date" : { "type": "string", "format": "date" },
+                    "likes" : { 
+                      "type": "array", 
+                      "items" : { 
+                        "type": "object",
+                        "properties": {
+                          "user_id" : { "type": "string" }
+                        } 
+                      } 
+                    },
+                    "comments" : { 
+                      "type": "array", 
+                      "items" : { 
+                        "type": "object",
+                        "properties": {
+                          "comment_id" : { "type": "string" },
+                          "user_id" : { "type": "string" },
+                          "text" : { "type": "string" },
+                          "links" : { "type": "array", "items" : { "type": "string" } },
+                          "images" : { "type": "array", "items" : { "type": "string" } },
+                          "Responses" : { "type": "array", "items" : { "type": "object", "description": "Here there is an array with embebed comments as Responses to the parent comment" } }
+                        } 
+                      } 
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description": "Bad Request, This means the Req Body is invalid, in this case check your request body and try again",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "timestamp" : { "type": "string", "format": "datetime" },
+                    "status": { "type": "integer"},
+                    "error": { "type": "string"},
+                    "path": { "type": "string", "format": "path"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/delete/{id}" : {
+      "delete" : {
+        "tags": ["Posts"],
+        "summary": "Delete a Post by Id",
+        "description": "This route require the JWT Token and the Post Id in the request param",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the post"
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Plain Text with a message, Post deleted Succesfully",
+            "content": {
+              "text/plain" : {
+                "schema" : { "type": "string" }
+              }
+            }
+          },
+          "400" : {
+            "description": "Bad Request, This means the Req Body is invalid, in this case check your request body and try again",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "timestamp" : { "type": "string", "format": "datetime" },
+                    "status": { "type": "integer"},
+                    "error": { "type": "string"},
+                    "path": { "type": "string", "format": "path"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/like/add/{id}" : {
+      "patch" : {
+        "tags": ["Posts"],
+        "summary": "Add a Like to a post",
+        "description": "Here you register a Like in the post wich id is in the request param, you need the JWT Token here",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the post"
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Plain Text with a message, Post liked Succesfully",
+            "content": {
+              "text/plain" : {
+                "schema" : { "type": "string" }
+              }
+            }
+          },
+          "400" : {
+            "description": "Bad Request, This means the Req Body is invalid, in this case check your request body and try again",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "timestamp" : { "type": "string", "format": "datetime" },
+                    "status": { "type": "integer"},
+                    "error": { "type": "string"},
+                    "path": { "type": "string", "format": "path"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/like/delete/{id}" : {
+      "patch" : {
+        "tags": ["Posts"],
+        "summary": "Delete a Like in a post",
+        "description": "Here the user can remove a like of a post, the JWT Token is Necesary",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the comment"
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Plain Text with a message, Post unliked Succesfully",
+            "content": {
+              "text/plain" : {
+                "schema" : { "type": "string" }
+              }
+            }
+          },
+          "400" : {
+            "description": "Bad Request, This means the Req Body is invalid, in this case check your request body and try again",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "timestamp" : { "type": "string", "format": "datetime" },
+                    "status": { "type": "integer"},
+                    "error": { "type": "string"},
+                    "path": { "type": "string", "format": "path"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/liked" : {
+      "get" : {
+        "tags": ["Posts"],
+        "summary": "Get Liked Posts",
+        "description": "Get the posts that user liked, this require the JWT Token",
+        "responses": {
+          "200" : {
+            "description": "Array with the Liked Posts",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "array",
+                  "items" : {
+                    "type": "object",
+                    "properties": {
+                      "id" : { "type": "string" },
+                      "user_id" : { "type": "string" },
+                      "title" : { "type": "string" },
+                      "text" : { "type": "string" },
+                      "links" : { "type": "array", "items" : { "type": "string" } },
+                      "images" : { "type": "array", "items" : { "type": "string" } },
+                      "Date" : { "type": "string", "format": "date" },
+                      "likes" : { 
+                        "type": "array", 
+                        "items" : { 
+                          "type": "object",
+                          "properties": {
+                            "user_id" : { "type": "string" }
+                          } 
+                        } 
+                      },
+                      "comments" : { 
+                        "type": "array", 
+                        "items" : { 
+                          "type": "object",
+                          "properties": {
+                            "comment_id" : { "type": "string" },
+                            "user_id" : { "type": "string" },
+                            "text" : { "type": "string" },
+                            "links" : { "type": "array", "items" : { "type": "string" } },
+                            "images" : { "type": "array", "items" : { "type": "string" } },
+                            "Responses" : { "type": "array", "items" : { "type": "object", "description": "Here there is an array with embebed comments as Responses to the parent comment" } }
+                          } 
+                        } 
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/comment/{id}" : {
+      "patch" : {
+        "tags": ["Posts"],
+        "summary": "Comment a Post",
+        "description": "Here the user can comment a Post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the post"
+          }
+        ],
+        "requestBody" : {
+          "description": "The comment content",
+          "content": {
+            "application/json" : {
+              "schema" : {
+                "type": "object",
+                "properties": {
+                  "text" : { "type": "string" },
+                  "links" : { "type": "array", "items" : { "type": "string" } },
+                  "images" : { "type": "array", "items" : { "type": "string" } },
+                  "responses" : { "type": "array", "items" : { "type": "object" }, "description": "The Responses Array is an array made of this main body" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200" : {
+            "description": "Plain Text with a message, Post Commented Succesfully",
+            "content": {
+              "text/plain" : {
+                "schema" : { "type": "string" }
+              }
+            }
+          },
+          "400" : {
+            "description": "Bad Request, This means the Req Body is invalid, in this case check your request body and try again",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "timestamp" : { "type": "string", "format": "datetime" },
+                    "status": { "type": "integer"},
+                    "error": { "type": "string"},
+                    "path": { "type": "string", "format": "path"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/comment/delete/{postid}/{commentid}" : {
+      "delete" : {
+        "tags": ["Posts"],
+        "summary": "Delete a Comment from a Post",
+        "description": "Here the user can remove a comment from a Post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "postid",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the Post"
+          },
+          {
+            "in": "path",
+            "name": "commentid",
+            "schema" : {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Object Id of the comment"
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Plain Text with a message, Comment deleted Succesfully",
+            "content": {
+              "text/plain" : {
+                "schema" : { "type": "string" }
+              }
+            }
+          },
+          "400" : {
+            "description": "Bad Request, This means the Req Body is invalid, in this case check your request body and try again",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "object",
+                  "properties": {
+                    "timestamp" : { "type": "string", "format": "datetime" },
+                    "status": { "type": "integer"},
+                    "error": { "type": "string"},
+                    "path": { "type": "string", "format": "path"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/posts/commented" : {
+      "get" : {
+        "tags": ["Posts"],
+        "summary": "Get posts Commented",
+        "description": "Here the user can see which posts did he commented, the JWT is required",
+        "responses": {
+          "200" : {
+            "description": "Array with the Commented Posts",
+            "content": {
+              "application/json" : {
+                "schema" : {
+                  "type": "array",
+                  "items" : {
+                    "type": "object",
+                    "properties": {
+                      "id" : { "type": "string" },
+                      "user_id" : { "type": "string" },
+                      "title" : { "type": "string" },
+                      "text" : { "type": "string" },
+                      "links" : { "type": "array", "items" : { "type": "string" } },
+                      "images" : { "type": "array", "items" : { "type": "string" } },
+                      "Date" : { "type": "string", "format": "date" },
+                      "likes" : { 
+                        "type": "array", 
+                        "items" : { 
+                          "type": "object",
+                          "properties": {
+                            "user_id" : { "type": "string" }
+                          } 
+                        } 
+                      },
+                      "comments" : { 
+                        "type": "array", 
+                        "items" : { 
+                          "type": "object",
+                          "properties": {
+                            "comment_id" : { "type": "string" },
+                            "user_id" : { "type": "string" },
+                            "text" : { "type": "string" },
+                            "links" : { "type": "array", "items" : { "type": "string" } },
+                            "images" : { "type": "array", "items" : { "type": "string" } },
+                            "Responses" : { "type": "array", "items" : { "type": "object", "description": "Here there is an array with embebed comments as Responses to the parent comment" } }
+                          } 
+                        } 
+                      }
+                    }
                   }
                 }
               }
